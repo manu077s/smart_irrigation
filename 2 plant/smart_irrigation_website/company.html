@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Plant Monitoring System — Company</title>
+  <meta name="description" content="Plant Monitoring System — smart irrigation, IoT hardware, cloud dashboards and installation services." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#071226;--card:#0b1724;--muted:#9fb0c7;--accent:#22c55e;--glass:rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,var(--bg),#05121a);color:#e6eef6}
+    a{color:inherit}
+
+    header{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;max-width:1200px;margin:0 auto}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#16a34a);display:flex;align-items:center;justify-content:center;font-weight:800;color:#042018}
+    nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600}
+    .btn{background:var(--accent);color:#042018;padding:10px 14px;border-radius:10px;font-weight:700;text-decoration:none}
+
+    .hero{max-width:1200px;margin:28px auto;padding:36px;border-radius:16px;background:linear-gradient(180deg,var(--glass),transparent);display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:center}
+    .hero h1{font-size:2.2rem;margin:0}
+    .muted{color:var(--muted)}
+
+    .services{max-width:1200px;margin:18px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;padding:0 18px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .features{max-width:1200px;margin:18px auto;padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+    .cta-strip{max-width:1200px;margin:20px auto;padding:16px;border-radius:12px;background:linear-gradient(90deg,rgba(34,197,94,0.07),transparent);display:flex;justify-content:space-between;align-items:center}
+
+    .contact{max-width:1200px;margin:18px auto;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);display:grid;grid-template-columns:1fr 360px;gap:18px}
+    input,textarea,select{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px;border-radius:8px;color:inherit}
+    .small{font-size:0.9rem}
+
+    footer{max-width:1200px;margin:28px auto;padding:18px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+
+    @media(max-width:920px){.hero{grid-template-columns:1fr}.contact{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">PMS</div>
+      <div>
+        <div style="font-weight:800">Plant Monitoring System</div>
+        <div class="muted small">Smart irrigation • IoT installations</div>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#usecases">Use Cases</a></li>
+        <li><a href="#customers">Customers</a></li>
+        <li><a href="#blogs">Blogs</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="#contact">Get Quote</a>
+  </header>
+
+  <main>
+    <section class="hero card">
+      <div>
+        <p class="small muted">IOT • ESP32 • Firebase • Blynk</p>
+        <h1>Automated irrigation & plant monitoring for homes, farms & greenhouses</h1>
+        <p class="muted">We design, build and maintain reliable ESP32-based systems with soil sensors, DHT11, LCD display and cloud dashboards. Reduce water use, protect plants and get data-driven insights.</p>
+        <div style="margin-top:16px;display:flex;gap:12px">
+          <a class="btn" href="#contact">Request Quote</a>
+          <a class="card small" href="#services" style="text-decoration:none;color:inherit;display:inline-flex;align-items:center;padding:10px 14px;border-radius:10px">Explore Services →</a>
+        </div>
+        <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+          <div class="card small">Local Display: 16×2 LCD<div class="muted" style="font-size:12px">On-site readings</div></div>
+          <div class="card small">Cloud Dashboards<div class="muted" style="font-size:12px">Firebase / ThingSpeak</div></div>
+        </div>
+      </div>
+
+      <aside class="card" style="padding:18px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div class="muted small">System Status</div>
+            <div style="font-weight:800;font-size:1.05rem">Deployment Ready</div>
+          </div>
+          <div style="text-align:right">
+            <div class="muted small">Uptime</div>
+            <div style="font-weight:700">99.7%</div>
+          </div>
+        </div>
+        <div class="muted small" style="margin-top:12px">Core: ESP32 • DHT11 • Soil sensors • Relay • Pump</div>
+      </aside>
+    </section>
+
+    <section id="services" class="services" aria-label="services">
+      <article class="card">
+        <h3>Full System Design</h3>
+        <p class="muted">End-to-end hardware, enclosure, wiring and testing. Comes with documentation and handover.</p>
+      </article>
+      <article class="card">
+        <h3>Sensor Integration & Calibration</h3>
+        <p class="muted">We install and calibrate DHT11 and up to 5 soil sensors per node — each zone tuned for plant type.</p>
+      </article>
+      <article class="card">
+        <h3>Cloud Dashboard Setup</h3>
+        <p class="muted">Firebase, Adafruit IO, Blynk or ThingSpeak — dashboards, alerts and data retention configured.</p>
+      </article>
+      <article class="card">
+        <h3>Maintenance & Support</h3>
+        <p class="muted">Annual servicing, remote troubleshooting, and firmware updates.</p>
+      </article>
+    </section>
+
+    <section id="usecases" class="features">
+      <div class="card">
+        <h3>Use Cases</h3>
+        <ul class="muted">
+          <li>Home gardens & balconies</li>
+          <li>Community gardens</li>
+          <li>Urban farms and Nurseries</li>
+          <li>Greenhouses & Research labs</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Why choose us?</h3>
+        <p class="muted">We combine robust hardware with cloud integrations and on-site installation expertise to deliver reliable systems that save water and time.</p>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <div style="background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px">Custom Zones</div>
+          <div style="background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px">Remote Control</div>
+          <div style="background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px">Analytics</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="cta-strip">
+      <div>
+        <strong>Want a site visit?</strong>
+        <div class="muted">We provide free site assessment and custom quotes for installations.</div>
+      </div>
+      <div>
+        <a class="btn" href="#contact">Book Visit</a>
+      </div>
+    </div>
+
+    <section id="customers" class="services" style="margin-top:18px">
+      <article class="card">
+        <h3>Customer: Asha's Garden</h3>
+        <p class="muted">Balcony installation — automated herbs and tomatoes. Saved 30% water.</p>
+      </article>
+      <article class="card">
+        <h3>Customer: Green Street</h3>
+        <p class="muted">Community garden with 10 zones and central dashboard.</p>
+      </article>
+      <article class="card">
+        <h3>Customer: UrbanSprout Farm</h3>
+        <p class="muted">Small urban farm with analytics and scheduling.</p>
+      </article>
+    </section>
+
+    <section id="blogs" style="max-width:1200px;margin:18px auto;padding:18px">
+      <div class="card">
+        <h3>Latest Blog</h3>
+        <p class="muted">How to calibrate soil sensors for accurate moisture readings — quick guide.</p>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="card">
+        <h3>Contact Us</h3>
+        <p class="muted">Tell us about your site and we'll propose a custom plan.</p>
+        <form action="https://api.web3forms.com/submit" method="POST" class="newsletter-k-form">
+          
+            <!-- Web3Forms Access Key -->
+            <input type="hidden" name="access_key" value="6ea49073-6828-4bf7-b14c-a2b256a8ae59">
+
+            <!-- Optional redirect page after success -->
+            <input type="hidden" name="redirect" value="https://web3forms.com/success">
+
+            <input id="name" name="name" type="text" placeholder="Your name" required />
+            <input id="email" name="email" type="email" placeholder="Email" required />
+            <select id="service" name="service">
+              <option>Full System Design</option>
+              <option>Sensor Integration</option>
+              <option>Cloud Dashboard</option>
+              <option>Maintenance</option>
+            </select>
+            <textarea id="message" name="message" rows="4" placeholder="Tell us about your area / plants / questions"></textarea>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+              <button class="btn" type="submit">Send Request</button>
+              <div id="formStatus" class="muted small" style="margin-left:8px"></div>
+            </div>
+          </form>
+      </div>
+
+      <aside class="card">
+        <h4>Quick Info</h4>
+        <p class="muted">Email: hello@plantmonitor.example</p>
+        <p class="muted">Phone: +91 98765 *****</p>
+        <p class="muted">Services across India — installation & support</p>
+      </aside>
+    </section>
+
+  </main>
+
+  <footer>
+    <div>© <span id="year"></span> Plant Monitoring System</div>
+    <div class="muted">Built with ESP32 • DHT11 • ThingSpeak • Firebase</div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function submitForm(e){
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const service = document.getElementById('service').value;
+      const message = document.getElementById('message').value.trim();
+      const status = document.getElementById('formStatus');
+      if(!name || !email){ status.textContent = 'Please fill required fields.'; return }
+
+      const payload = {name,email,service,message,ts:new Date().toISOString()};
+      const key = 'pms_requests';
+      const existing = JSON.parse(localStorage.getItem(key) || '[]');
+      existing.push(payload);
+      localStorage.setItem(key, JSON.stringify(existing));
+
+      status.textContent = 'Sending...';
+      setTimeout(()=>{ status.textContent = 'Request saved — we will contact you soon.'; document.getElementById('contactForm').reset(); },900);
+    }
+  </script>
+</body>
+</html>

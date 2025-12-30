@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plant Monitoring System — Blogs</title>
+  <meta name="description" content="Blogs and articles about smart irrigation, ESP32, IoT, soil sensors, and automation." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#06121a;--card:#0b1620;--accent:#22c55e;--muted:#9fb0c7}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI;background:linear-gradient(180deg,var(--bg),#04121a);color:#eaf2f8}
+    .wrap{max-width:1100px;margin:0 auto;padding:20px}
+
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .mark{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#16a34a);display:flex;align-items:center;justify-content:center;color:#042019;font-weight:800}
+    h1{margin:0}
+
+    .blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:16px}
+    .blog{background:rgba(255,255,255,0.03);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.05);cursor:pointer;transition:.3s}
+    .blog:hover{background:rgba(255,255,255,0.06)}
+    .blog h3{margin:0 0 6px}
+    .blog p{color:var(--muted);font-size:0.95rem}
+    .tag{background:rgba(255,255,255,0.04);padding:4px 8px;border-radius:999px;color:var(--muted);font-size:12px;margin-top:6px;display:inline-block}
+
+    .viewer{margin-top:28px;padding:20px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.05);display:none}
+    .viewer h2{margin-top:0}
+    .viewer p{color:var(--muted)}
+    .close-btn{background:transparent;border:1px solid rgba(255,255,255,0.08);padding:6px 10px;border-radius:8px;color:var(--muted);cursor:pointer;margin-top:10px}
+
+    footer{margin-top:28px;color:var(--muted);text-align:center}
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="mark">PMS</div>
+      <div>
+        <h1>Plant Monitoring System Blogs</h1>
+        <div style="color:var(--muted);font-size:14px">Articles • Tutorials • IoT Tips</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="blog-grid" id="blogGrid"></section>
+
+  <section class="viewer" id="viewer">
+    <h2 id="vTitle"></h2>
+    <p id="vContent"></p>
+    <button class="close-btn" onclick="closeViewer()">Close</button>
+  </section>
+
+  <footer>© <span id="y"></span> Plant Monitoring System — Blogs</footer>
+
+</div>
+
+<script>
+  document.getElementById('y').textContent = new Date().getFullYear();
+
+  const blogs = [
+    {
+      title: "How ESP32 Automates Irrigation",
+      tag: "IoT",
+      content: "ESP32 reads soil sensors, controls relays, sends cloud data, and runs fully automated irrigation cycles..."
+    },
+    {
+      title: "Why Soil Moisture Sensors Matter",
+      tag: "Sensors",
+      content: "Soil moisture probes provide data-driven watering decisions, improving plant health and reducing water waste..."
+    },
+    {
+      title: "Using Firebase for Live Plant Monitoring",
+      tag: "Firebase",
+      content: "Firebase Realtime Database and Hosting allow you to build dashboards, store logs, and enable instant IoT updates..."
+    },
+    {
+      title: "5 Tips for Better Home Garden Automation",
+      tag: "Home Garden",
+      content: "Optimize watering schedules, add shading, monitor humidity, and use ESP32 sensors to transform your garden..."
+    },
+    {
+      title: "Adafruit IO vs ThingSpeak — Which Platform Should You Use?",
+      tag: "Cloud",
+      content: "Adafruit IO is great for dashboards; ThingSpeak is perfect for analytics. Using both gives you monitoring + insights..."
+    },
+    {
+      title: "Building a Low-Cost Smart Irrigation System",
+      tag: "DIY",
+      content: "With ESP32, DHT11, moisture sensors, and a relay, you can create a complete monitoring system under a budget..."
+    }
+  ];
+
+  function renderBlogs(){
+    const grid = document.getElementById('blogGrid');
+    grid.innerHTML = '';
+    blogs.forEach((b,i)=>{
+      const el = document.createElement('div');
+      el.className = 'blog';
+      el.innerHTML = `<h3>${b.title}</h3><p>${b.content.substring(0,80)}...</p><div class='tag'>${b.tag}</div>`;
+      el.onclick = ()=>openBlog(i);
+      grid.appendChild(el);
+    });
+  }
+
+  function openBlog(i){
+    const b = blogs[i];
+    document.getElementById('vTitle').textContent = b.title;
+    document.getElementById('vContent').textContent = b.content;
+    document.getElementById('viewer').style.display = 'block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function closeViewer(){
+    document.getElementById('viewer').style.display = 'none';
+  }
+
+  renderBlogs();
+</script>
+
+</body>
+</html>

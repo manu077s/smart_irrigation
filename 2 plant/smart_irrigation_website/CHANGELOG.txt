@@ -1,0 +1,4 @@
+Changelog:
+- Replaced newsletter subscription with feedback form in index.html
+- Updated script.js to use 'Submitting...' and added feedback form handler
+- Adjusted styles.css for textarea styling

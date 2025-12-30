@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Plant Monitoring System — Use Cases</title>
+  <meta name="description" content="Use cases for Plant Monitoring System Smart Irrigation & Plant Monitoring System" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#071029;--card:#071921;--accent:#22c55e;--muted:#94a3b8}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,var(--bg),#04121a);color:#eaf2f8}
+    .wrap{max-width:1100px;margin:28px auto;padding:18px}
+    header{display:flex;align-items:center;justify-content:space-between}
+    .logo{display:flex;gap:12px;align-items:center}
+    .logo .mark{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#16a34a);display:flex;align-items:center;justify-content:center;color:#042019;font-weight:800}
+    nav a{color:var(--muted);text-decoration:none;margin-left:14px}
+
+    .hero{display:flex;gap:20px;align-items:center;margin-top:18px}
+    .hero .left{flex:1}
+    .hero h1{margin:0;font-size:2rem}
+    .hero p{color:var(--muted)}
+
+    .usecases{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:22px}
+    .case{background:rgba(255,255,255,0.02);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .case h3{margin:6px 0}
+    .case p{color:var(--muted);margin:0 0 8px}
+    .badge{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);color:var(--muted);font-weight:700}
+
+    .diagram{margin-top:18px;padding:16px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
+    .grid-2{display:grid;grid-template-columns:1fr 320px;gap:16px}
+
+    footer{margin-top:24px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+
+    @media(max-width:920px){.grid-2{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo"><div class="mark">GF</div><div><strong>Plant Monitoring System</strong><div style="font-size:12px;color:var(--muted)">Use Cases & Applications</div></div></div>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#usecases">Use Cases</a>
+        <a href="#how">How It Works</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="left">
+        <h1>Where Plant Monitoring System helps — real-world use cases</h1>
+        <p class="muted">From home gardens to urban farms and research labs — see how the ESP32-based irrigation system fits into different scenarios and what benefits it brings.</p>
+      </div>
+      <div style="text-align:right">
+        <div class="badge">ESP32 • DHT11 • 5 Soil Sensors</div>
+      </div>
+    </section>
+
+    <section id="usecases" class="usecases">
+      <article class="case">
+        <h3>Home Garden Automation</h3>
+        <p>Automatic watering for up to 5 plant beds, remote monitoring via mobile or web, local LCD status. Perfect for hobby gardeners who travel or have irregular schedules.</p>
+        <ul class="muted">
+          <li>Benefits: Water saving, healthier plants, low maintenance</li>
+          <li>Trigger: Soil moisture threshold per bed</li>
+        </ul>
+      </article>
+
+      <article class="case">
+        <h3>Balcony / Apartment Plants</h3>
+        <p>Small footprint system that fits balcony planters. Works with battery or small adapter; manual override through Blynk or website.</p>
+        <ul class="muted"><li>Benefits: Space-efficient, scheduled watering, alerts</li></ul>
+      </article>
+
+      <article class="case">
+        <h3>Community Gardens</h3>
+        <p>Multi-zone watering, central dashboard using Firebase or Adafruit IO, data logging for season planning.</p>
+        <ul class="muted"><li>Benefits: Shared monitoring, historical moisture logs, automated schedules</li></ul>
+      </article>
+
+      <article class="case">
+        <h3>Small-Scale Urban Farming</h3>
+        <p>Integrate with ThingSpeak for analytics; use multiple ESP32 nodes for larger plots; smart scheduling and weather-aware watering.</p>
+        <ul class="muted"><li>Benefits: Crop optimization, water efficiency, analytics</li></ul>
+      </article>
+
+      <article class="case">
+        <h3>Greenhouses</h3>
+        <p>Combine DHT11 readings (temp/humidity) with soil moisture to control microclimates and watering — ideal for seedlings and sensitive crops.</p>
+        <ul class="muted"><li>Benefits: Precise environment control, reduced plant stress</li></ul>
+      </article>
+
+      <article class="case">
+        <h3>Research & Education</h3>
+        <p>Use data logging to teach IoT, sensor calibration, and environmental science. Easily extend to include new sensors or actuators.</p>
+        <ul class="muted"><li>Benefits: Reproducible experiments, hands-on learning</li></ul>
+      </article>
+    </section>
+
+    <section id="how" class="diagram">
+      <div class="grid-2">
+        <div>
+          <h3>How It Works (quick)</h3>
+          <ol class="muted">
+            <li>Sensors (soil ×5, DHT11) send readings to NodeMCU ESP32.</li>
+            <li>ESP32 evaluates thresholds and toggles relay to run the 5V pump when needed.</li>
+            <li>Data is pushed to cloud (Firebase / Blynk / Adafruit IO / ThingSpeak) and visible on website dashboards.</li>
+            <li>Local 16×2 LCD shows immediate readings and pump status.</li>
+          </ol>
+
+          <h4>Common Integrations</h4>
+          <p class="muted">Firebase — full custom dashboards and user auth. Blynk — quick mobile control. Adafruit IO — simple feeds & blocks. ThingSpeak — data logging & MATLAB analysis.</p>
+        </div>
+
+        <div>
+          <h4>Example Deployment</h4>
+          <p class="muted">Small farm: 3 ESP32 nodes, each handling 5 beds; central website reads from Firebase; ThingSpeak channel for historical graphs; Blynk for farm workers to manually trigger zones.</p>
+          <div style="margin-top:12px">
+            <button onclick="alert('Download deployment checklist (not implemented)')" style="padding:10px 12px;border-radius:8px;border:none;background:var(--accent);cursor:pointer">Get Deployment Checklist</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="margin-top:18px">
+      <h3>Contact & Next Steps</h3>
+      <p class="muted">Tell us about your site size, plant types, and preferred cloud platform; we will propose a custom plan.</p>
+      <p class="muted"><strong>Email:</strong> hello@greenflow.example • <strong>Phone:</strong> +91 98765 43210</p>
+    </section>
+
+    <footer>
+      <div class="muted">© <span id="y"></span> Plant Monitoring System — Use Cases</div>
+      <div class="muted">Made for IoT projects • ESP32</div>
+    </footer>
+  </div>
+
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>

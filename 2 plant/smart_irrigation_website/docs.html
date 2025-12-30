@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Plant Monitoring System — Documentation</title>
+  <meta name="description" content="Documentation for Plant Monitoring System: hardware, wiring, firmware, cloud integration, and deployment." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f7fafc;--panel:#ffffff;--muted:#6b7280;--accent:#16a34a;--mono:Consolas,monaco,monospace}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#eef2f7 0%,#f1f5f9 100%);color:#0f1724}
+    .wrap{max-width:1100px;margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:12px;align-items:center}
+    .mark{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#059669);display:flex;align-items:center;justify-content:center;color:white;font-weight:800}
+    h1{margin:0}
+
+    .layout{display:grid;grid-template-columns:260px 1fr;gap:18px;margin-top:18px}
+    nav.docs{background:var(--panel);border-radius:12px;padding:12px;border:1px solid #e6edf3}
+    nav.docs a{display:block;padding:8px;border-radius:8px;color:var(--muted);text-decoration:none;margin-bottom:6px}
+    nav.docs a.active{background:rgba(6,95,70,0.08);color:var(--accent);font-weight:700}
+
+    .content{background:var(--panel);padding:20px;border-radius:12px;border:1px solid #e6edf3}
+    pre{background:transparent;color:#000000;padding:12px;border-radius:0;overflow:auto;font-family:var(--mono);font-size:13px;border:none;}
+    code{background:transparent;padding:0;border-radius:0;color:#000000;font-weight:600;}
+
+    h2{margin-top:0}
+    .section{margin-bottom:18px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+    .note{background:#f0fff4;border-left:4px solid var(--accent);padding:10px;border-radius:6px;color:#064e3b}
+
+    @media(max-width:920px){.layout{grid-template-columns:1fr}
+      nav.docs{display:flex;overflow:auto}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="mark">PMS</div>
+        <div>
+          <h1>Plant Monitoring System</h1>
+          <div style="color:var(--muted);font-size:13px">Documentation — hardware, firmware, cloud & deployment</div>
+        </div>
+      </div>
+      <div style="text-align:right;color:var(--muted);font-size:13px">Version: <strong>1.0.0</strong></div>
+    </header>
+
+    <div class="layout">
+      <nav class="docs" id="toc">
+        <a href="#overview" class="active">Overview</a>
+        <a href="#hardware">Hardware & Wiring</a>
+        <a href="#circuit">Circuit Diagram</a>
+        <a href="#firmware">Firmware (ESP32)</a>
+        <a href="#cloud">Cloud Integrations</a>
+        <a href="#api">Web API & Website</a>
+        <a href="#deploy">Deployment & Power</a>
+        <a href="#troubleshoot">Troubleshooting</a>
+        <a href="#license">License</a>
+      </nav>
+
+      <main class="content" id="content">
+        <section id="overview" class="section">
+          <h2>Overview</h2>
+          <p>The Plant Monitoring System is an ESP32-based smart irrigation platform that monitors soil moisture (up to 5 zones), temperature & humidity (DHT11), and controls a 5V water pump via a relay. Data is displayed locally on a 16×2 LCD and optionally pushed to cloud platforms (Firebase, Blynk, Adafruit IO, ThingSpeak) for remote monitoring and control.</p>
+          <div class="note">This document contains code snippets, wiring notes and best practices to deploy reliably.</div>
+        </section>
+
+        <section id="hardware" class="section">
+          <h2>Hardware & Wiring</h2>
+          <div class="grid-2">
+            <div>
+              <h3>Parts List</h3>
+              <ul>
+                <li>NodeMCU ESP32</li>
+                <li>DHT11 Temperature & Humidity sensor</li>
+                <li>5 × Soil moisture sensors (analog)</li>
+                <li>5V Relay module (1-channel or multi-channel depending on pump/valves)</li>
+                <li>16×2 LCD (I2C preferred)</li>
+                <li>5V DC Water Pump</li>
+                <li>Zero PCB / Perfboard, jumper wires, connectors</li>
+                <li>Battery / 5V power supply (see <a href="#deploy">Deployment</a>)</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Pin Connections (recommended)</h3>
+              <pre><code>// Example (change pins as needed)
+DHT11   -> GPIO 4
+Soil1   -> ADC1_CH0 (GPIO36)
+Soil2   -> ADC1_CH3 (GPIO39)
+Soil3   -> ADC1_CH6 (GPIO34)
+Soil4   -> ADC1_CH7 (GPIO35)
+Soil5   -> ADC1_CH4 (GPIO32)
+Relay   -> GPIO 16 (digital)
+LCD(I2C)-> SDA: GPIO21  SCL: GPIO22
+VIN (pump)-> External 5V through relay
+ESP32   -> 5V (or VIN), GND common with pump supply
+</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section id="circuit" class="section">
+          <h2>Circuit Diagram</h2>
+          <p>Keep ground common between ESP32 and pump supply. Use a flyback diode if using DC motors without driver, and place a snubber if required. For multiple valves consider using separate relays per zone or a 1-to-many valve manifold.</p>
+          <pre><code>ESP32 GPIO -> Relay IN
+Relay VCC -> 5V
+Relay GND -> GND
+Pump + -> Relay COM/NO
+Pump - -> 5V GND
+</code></pre>
+        </section>
+
+        <section id="firmware" class="section">
+          <h2>Firmware (ESP32)</h2>
+          <p>Below is a minimal Arduino-style sketch outline. Use Arduino-ESP32 board support or PlatformIO.</p>
+          <pre><code>#include &lt;WiFi.h&gt;
+#include "DHT.h"
+const int DHTPIN = 4;
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup(){
+  Serial.begin(115200);
+  dht.begin();
+  // initialize ADC pins for soil sensors
+  // initialize relay pin as OUTPUT
+  // init I2C LCD and WiFi
+}
+
+void loop(){
+  // read soil sensors via analogRead()
+  // read dht.readTemperature(), dht.readHumidity()
+  // decide on pump control thresholds
+  // update LCD
+  // send to cloud (HTTP/MQTT)
+  delay(2000);
+}
+</code></pre>
+
+          <h3>Sending Data to Firebase (HTTP)</h3>
+          <pre><code>// Example: HTTP PUT to Firebase Realtime DB
+// URL: https://YOUR_PROJECT.firebaseio.com/devices/device1.json
+// Use WiFiClientSecure for HTTPS and include JSON payload with sensor values
+</code></pre>
+        </section>
+
+        <section id="cloud" class="section">
+          <h2>Cloud Integrations</h2>
+          <p>You can integrate with multiple platforms. Pick one or more depending on needs:</p>
+          <ul>
+            <li><strong>Firebase</strong> — Realtime DB or Firestore for custom dashboards and authentication.</li>
+            <li><strong>Blynk</strong> — Rapid mobile dashboards and control widgets.</li>
+            <li><strong>Adafruit IO</strong> — Easy feeds & dashboard blocks (MQTT/HTTP).</li>
+            <li><strong>ThingSpeak</strong> — Time-series data logging and MATLAB analytics.</li>
+          </ul>
+
+          <h3>Best Practices</h3>
+          <ol>
+            <li>Use MQTT where possible for efficient realtime updates.</li>
+            <li>Secure your keys: do not hardcode long-lived keys in firmware; consider device tokens or remote config.</li>
+            <li>Rate-limit uploads (eg. every 30s–5min) to save bandwidth and quotas.</li>
+          </ol>
+        </section>
+
+        <section id="api" class="section">
+          <h2>Web API & Website</h2>
+          <p>If you host a website to read from Firebase or your own backend, the basic API endpoints are:</p>
+          <pre><code>GET /api/v1/devices/{id}        -> returns latest sensor readings
+POST /api/v1/devices/{id}/control -> {"pump": "on"} or {"pump": "off"}
+GET /api/v1/devices/{id}/logs    -> returns time-series sensor logs
+</code></pre>
+
+          <p>For the static website (index.html) we provide a simple JS snippet to read from Firebase and draw charts using Chart.js.</p>
+        </section>
+
+        <section id="deploy" class="section">
+          <h2>Deployment & Power</h2>
+          <h4>Powering ESP32 vs Pump</h4>
+          <p>ESP32 can be powered with 5V via VIN or 3.3V regulator. The pump should have a separate 5V supply capable of its stall current. Do not power the pump from the ESP32 5V regulator. Use common ground and a proper relay rated for motor loads.</p>
+
+          <h4>Enclosure & Safety</h4>
+          <ul>
+            <li>Place electronics in a weatherproof enclosure (IP65) away from direct water.</li>
+            <li>Use proper grommets for wires, seal all openings.</li>
+            <li>Fuse the pump supply and use flyback protection if needed.</li>
+          </ul>
+        </section>
+
+        <section id="troubleshoot" class="section">
+          <h2>Troubleshooting</h2>
+          <h4>No WiFi</h4>
+          <p>Check SSID/password, move device closer, verify power supply. Use Serial debug to print WiFi.status().</p>
+          <h4>False moisture readings</h4>
+          <p>Soil sensors can be noisy—use smoothing (moving average), calibrate sensor in dry/wet soil, or use capacitive sensors for better stability.</p>
+          <h4>Relay clicking but pump not running</h4>
+          <p>Check relay wiring, ensure COM/NO connected correctly, verify pump supply voltage and ground common.</p>
+        </section>
+
+        <section id="license" class="section">
+          <h2>License</h2>
+          <p>MIT License — feel free to reuse and adapt for non-commercial or commercial projects. Please credit the Plant Monitoring System repository if published.</p>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // simple TOC highlight
+    const toc = document.getElementById('toc');
+    toc.addEventListener('click', e=>{ if(e.target.tagName==='A'){ toc.querySelectorAll('a').forEach(a=>a.classList.remove('active')); e.target.classList.add('active'); }});
+  </script>
+</body>
+</html>

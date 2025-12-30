@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Plant Monitoring — Metrics Dashboard</title>
+  <meta name="description" content="Reliability & Performance metrics dashboard for Smart Plant Monitoring System" />
+  <style>
+    /* Dark, modern, responsive CSS */
+    :root{
+      --bg:#0b1020;
+      --card:#0f1724;
+      --muted:#94a3b8;
+      --accent:#22c55e;
+      --accent-2:#60a5fa;
+      --glass: rgba(255,255,255,0.03);
+      --radius:14px;
+      --mono: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:var(--mono);background:linear-gradient(180deg,#071024 0%,var(--bg) 100%);color:#e6eef8}
+    .wrap{max-width:1100px;margin:28px auto;padding:28px}
+
+    header{display:flex;align-items:center;gap:18px;margin-bottom:18px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#021124}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+
+    .card{grid-column:span 12;background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:0 6px 24px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+    @media(min-width:760px){.card.half{grid-column:span 6}.card.third{grid-column:span 4}.card.two-thirds{grid-column:span 8}}
+
+    .section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .section-title h2{margin:0;font-size:15px}
+    .small{font-size:13px;color:var(--muted)}
+
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    thead th{font-weight:600;text-align:left;padding:10px 8px;color:var(--muted);font-size:12px}
+    tbody td{padding:10px 8px;border-top:1px dashed rgba(255,255,255,0.03)}
+    tbody tr:hover td{background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent)}
+
+    .metric-big{display:flex;align-items:baseline;gap:12px}
+    .metric-value{font-size:28px;font-weight:700}
+    .metric-sub{color:var(--muted);font-size:12px}
+
+    .chip{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--glass);color:var(--muted);font-size:12px;margin-left:6px}
+
+    /* Nice responsive cards */
+    .metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    @media(min-width:760px){.metrics-grid{grid-template-columns:repeat(4,1fr)}}
+    .stat{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:12px}
+    .label{font-size:12px;color:var(--muted)}
+
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+
+    /* small utilities */
+    .muted{color:var(--muted)}
+    .btn{background:var(--accent);color:#021124;padding:8px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
+
+    /* Highlight good/bad */
+    .ok{color:#7ef38a;font-weight:700}
+    .warn{color:#f4c152;font-weight:700}
+    .bad{color:#ff7b7b;font-weight:700}
+
+    /* Responsive tweak */
+    @media(max-width:520px){header{gap:10px}.logo{width:44px;height:44px}} 
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">SP</div>
+      <div>
+        <h1>Smart Plant Monitoring — Metrics Dashboard</h1>
+        <p class="lead">Reliability & Performance overview (ESP32 · 5 moisture sensors · DHT · Pump · Firebase / Blynk / ThingSpeak / Adafruit)</p>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <div class="section-title">
+          <h2>Summary</h2>
+          <div class="small">Updated: <span class="chip">Auto-generated</span></div>
+        </div>
+        <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center">
+          <div class="metric-big">
+            <div>
+              <div class="metric-value">Availability</div>
+              <div class="metric-sub">Target: <strong>≥ 99.9%</strong> · Current estimate: <span class="ok">99.72%</span></div>
+            </div>
+          </div>
+
+          <div class="metric-big">
+            <div>
+              <div class="metric-value">Latency</div>
+              <div class="metric-sub">Avg: <strong>0.7 - 1.5 s</strong> (Sensor → Cloud → Action)</div>
+            </div>
+          </div>
+
+          <div class="metric-big">
+            <div>
+              <div class="metric-value">Error Rate</div>
+              <div class="metric-sub">Target: <strong>≤ 3%</strong> · Current estimate: <span class="warn">~2.4%</span></div>
+            </div>
+          </div>
+
+          <div class="metric-big">
+            <div>
+              <div class="metric-value">Throughput</div>
+              <div class="metric-sub">~10 - 20 msgs/min (multi-cloud)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card half">
+        <div class="section-title"><h2>Reliability Metrics</h2><div class="small">Key measures</div></div>
+        <table>
+          <thead>
+            <tr><th>Metric</th><th>Definition</th><th>Value / Target</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Availability</td><td>Uptime percentage</td><td>99.72% (target ≥99.9%)</td></tr>
+            <tr><td>Fault Tolerance</td><td>Resilience to HW/SW faults</td><td>Moderate → <strong>Improve: watchdog, buffering</strong></td></tr>
+            <tr><td>Error Rate</td><td>Incorrect readings / total</td><td>~2.4% (target ≤3%)</td></tr>
+            <tr><td>MTTR</td><td>Mean Time To Repair</td><td>Baseline: 2–3 hrs · Target: &lt;30 min</td></tr>
+            <tr><td>MTTF</td><td>Mean Time To Failure (sensors)</td><td>6–12 months · Target &gt;12 months</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card half">
+        <div class="section-title"><h2>Performance Metrics</h2><div class="small">Latency · Throughput · Scalability</div></div>
+        <table>
+          <thead>
+            <tr><th>Metric</th><th>Formula / Method</th><th>Target</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Latency</td><td>t_response - t_request</td><td>&lt; 1.5 s</td></tr>
+            <tr><td>Throughput</td><td>messages / minute</td><td>> 10 msgs/min</td></tr>
+            <tr><td>Scalability</td><td>Perf(N)/Perf(1)</td><td>Linear up to 8–10 sensors</td></tr>
+            <tr><td>Packet Loss</td><td>lost/sent × 100</td><td>&lt; 2%</td></tr>
+            <tr><td>Jitter</td><td>|L_i - L_{i-1}|</td><td>&lt; 100 ms</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card two-thirds">
+        <div class="section-title"><h2>Performance Comparison</h2><div class="small">System vs. proposed</div></div>
+        <table>
+          <thead>
+            <tr><th>System Type</th><th>Latency</th><th>Throughput</th><th>Scalability</th><th>Reliability</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Traditional IoT</td><td>2.5 - 3.0 s</td><td>4 - 6 msg/min</td><td>2 - 3 sensors</td><td>90 - 92%</td></tr>
+            <tr><td>Cloud ESP8266</td><td>1.8 - 2.2 s</td><td>6 - 10 msg/min</td><td>4 - 6 sensors</td><td>93 - 95%</td></tr>
+            <tr><td><strong>Proposed (ESP32 Multi-Cloud)</strong></td><td><strong>0.7 - 1.5 s</strong></td><td><strong>10 - 20 msg/min</strong></td><td><strong>8 - 10 sensors</strong></td><td><strong>97 - 99%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card third">
+        <div class="section-title"><h2>Quick Actions</h2><div class="small">Improve metrics</div></div>
+        <ul class="muted" style="line-height:1.6;margin:0;padding-left:18px">
+          <li>Use Firebase as primary datastore (canonical source)</li>
+          <li>Implement watchdog + auto-reconnect</li>
+          <li>Buffer locally (LittleFS) and batch uploads</li>
+          <li>Add current sensing for pump protection</li>
+          <li>Median voting among 5 moisture probes to reduce false positives</li>
+        </ul>
+      </div>
+
+      <div class="card third">
+        <div class="section-title"><h2>Sampling & Upload Strategy</h2><div class="small">Rate limits friendly</div></div>
+        <table>
+          <thead><tr><th>Item</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Sensor sample rate</td><td>Every 2 - 5 minutes</td></tr>
+            <tr><td>Firebase writes</td><td>Every sample</td></tr>
+            <tr><td>ThingSpeak / Adafruit</td><td>Every 5 - 10 minutes (summary)</td></tr>
+            <tr><td>Blynk</td><td>Event-driven (control)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card third">
+        <div class="section-title"><h2>RPI (Reliability-Performance Index)</h2><div class="small">Availability × (1 - ErrorRate)</div></div>
+        <div class="metrics-grid">
+          <div class="stat">
+            <div class="label">Availability</div>
+            <div style="font-weight:700;font-size:18px">99.72%</div>
+          </div>
+          <div class="stat">
+            <div class="label">Error Rate</div>
+            <div style="font-weight:700;font-size:18px">2.4%</div>
+          </div>
+          <div class="stat">
+            <div class="label">RPI</div>
+            <div style="font-weight:700;font-size:18px;color:var(--accent)">0.974</div>
+          </div>
+          <div class="stat">
+            <div class="label">Packet Loss</div>
+            <div style="font-weight:700;font-size:18px">1.2%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title"><h2>Notes & Next Steps</h2><div class="small">What to measure & implement</div></div>
+        <ol class="muted">
+          <li>Start 30-day uptime logging to measure Availability.</li>
+          <li>Run sensor error-rate test (1 week) and record outliers.</li>
+          <li>Implement watchdog + local buffer and measure MTTR improvement.</li>
+          <li>Add current sensor on pump and test dry-run protection.</li>
+        </ol>
+      </div>
+
+    </div>
+
+    <footer>
+      Built from Survey Paper 2 (Jan 13, 2025) metrics · Designed for ESP32 multi-cloud setup
+    </footer>
+  </div>
+</body>
+</html>
